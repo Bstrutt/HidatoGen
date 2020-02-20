@@ -41,13 +41,31 @@ public class Board {
 		Vector<Integer[]> v = findOpenCoords(currentCoords);
 		//Chooses the next square to move to randomly
 		//This needs a lot of work, might be easiest to make a recursive helper
-		for( int i = 0; i < width*height; i++){
-			currentCoords = v.remove(gen.nextInt(v.size()));
+		while(!placeNext(currentCoords)){
+			puzzle[currentCoords[0]][currentCoords[1]] = 0;
+			currentCoords = placeOne();
 		}
-		gen.nextInt(v.size());
-//		for(int i = 0; i < width*height + 1; i++){
-//			
-//		}
+	}
+	
+	private boolean placeNext(Integer[] a){
+		
+		Vector<Integer[]> v = findOpenCoords(a);
+		Integer[] temp;
+		while(v.size() > 0){
+			temp = v.remove(gen.nextInt(v.size()));
+			puzzle[temp[0]][temp[1]] = puzzle[a[0]][a[1]] + 1;
+			if(puzzle[temp[0]][temp[1]] == width*height){
+				return true;
+			} else {
+				if(placeNext(temp)){
+					return true;
+				} else {
+					puzzle[temp[0]][temp[1]] = 0;
+					continue;
+				}
+			}
+		}
+		return false;
 	}
 	//This method gets a coordinate and finds an open coordinate next to it randomly
 	private Vector<Integer[]> findOpenCoords(Integer[] a){
@@ -79,6 +97,13 @@ public class Board {
 		int tempRand = gen.nextInt(width * height);
 		int startHeight = tempRand/height;
 		int startWidth = tempRand/width;
+		
+		while(puzzle[startHeight][startWidth] == -1){
+			tempRand = gen.nextInt(width * height);
+			startHeight = tempRand/height;
+			startWidth = tempRand/width;
+		}
+		
 		puzzle[startHeight][startWidth]= 1;
 		Integer[] a = {startHeight, startWidth};
 		return a;
