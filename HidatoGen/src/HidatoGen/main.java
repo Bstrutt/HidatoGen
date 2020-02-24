@@ -14,7 +14,7 @@ public class main {
 						{20,19,18,17},
 						{21,22,23,24}};
 		//Board b = new Board(test);
-		Board b = new Board(6, 6);
+		Board b = new Board(4, 6);
 		b.printBoard();
 //		 SwingUtilities.invokeLater(new Runnable() {
 //	            public void run() {

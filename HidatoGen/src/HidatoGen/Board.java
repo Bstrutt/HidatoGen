@@ -21,7 +21,7 @@ public class Board {
 			}
 		}
 		populateBoard();
-	}
+	}	
 	public Board(int[][] a){
 		this.width = a.length;
 		this.height = a[0].length;
@@ -74,11 +74,11 @@ public class Board {
 		Vector<Integer[]> v = new Vector<Integer[]>();
 		for(int i = -1; i < 2; i++){
 			for(int j = -1; j < 2; j++){
-				//Dont test the coordinate we are searching
+				//Don't test the coordinate we are searching
 				if(i == 0 && j == 0){
 					continue;
-				}//Dont test the coordinates outside of the puzzle 
-				else if(y+i == -1 || y+i == height || x+j == -1 || x+j == width){
+				}//Don't test the coordinates outside of the puzzle 
+				else if(y+i == -1 || y+i == width || x+j == -1 || x+j == height){
 					continue;
 				} else {
 					if(puzzle[y + i][x + j] == 0){
@@ -90,7 +90,7 @@ public class Board {
 		}
 		return v;
 	}
-	//Places the first one on the board. This is the starting point
+	//Places the first number on the board. This is the starting point
 	//Returns the coordinate of the first one
 	private Integer[] placeOne(){
 		Random gen = new Random();
@@ -108,10 +108,10 @@ public class Board {
 		Integer[] a = {startHeight, startWidth};
 		return a;
 	}
+	//Simple Print method in swing with jframe and jtable
 	void printBoard() {
 		new DisplayBoard(this);
 	}
-
 	public int getWidth() {
 		return width;
 	}
