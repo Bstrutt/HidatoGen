@@ -33,7 +33,65 @@ public class Board {
 		}
 		gen = new Random();
 	}
-
+	public boolean checkComplete(){
+		int currenty = 0;
+		int currentx = 0;
+		//Find the first playable square to compare in the next operations
+		for(int i = 0; i < width; i++){
+			for(int j = 0; j < height; j++){
+				if(puzzle[i][j] != -1 && puzzle[i][j] != 0){
+					currenty = i;
+					currentx = j;
+				}
+			}
+		}
+		int endNum = puzzle[currenty][currentx];
+		for(int i = 0; i < width; i++){
+			for(int j = 0; j < height; j++){
+				//Return false if any blank spaces
+				if(puzzle[i][j] == 0){
+					return false;
+				}
+				//Find start number(lowest on board) that isnt an unplayable square (-1)
+				if(puzzle[i][j] < puzzle[currenty][currentx] && puzzle[i][j] != -1 ){
+					currenty = i;
+					currentx = j;
+				}
+				//Find end number (highest on board)
+				if(puzzle[i][j] > endNum){
+					endNum = puzzle[i][j];
+				}
+			}
+		}
+		int currentNum = puzzle[currenty][currentx];
+		search: while(currentNum < endNum){
+			for(int i = -1; i < 2; i++){
+				for(int j = -1; j < 2; j++){
+					//Don't test the coordinate we are searching
+					if(i == 0 && j == 0){
+						continue;
+					}//Don't test the coordinates outside of the puzzle 
+					else if(currenty+i == -1 || currenty+i == width || currentx+j == -1 || currentx+j == height){
+						continue;
+					} else {
+						if(puzzle[currenty + i][currentx + j] == currentNum+1){
+							currentNum++;
+							currenty = currenty + i;
+							currentx = currentx + j;
+							continue search;
+						}
+					}
+				}
+			}
+			return false;
+		}
+		if(currentNum == endNum){
+			return true;
+		}
+		return false;
+		
+		
+	}
 	void populateBoard() {
 		//Places the start randomly
 		Integer[] currentCoords = placeOne();
