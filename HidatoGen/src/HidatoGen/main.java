@@ -7,8 +7,7 @@ package HidatoGen;
 public class main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		int[][] test = {{-1,2,3,4,5,-1},
+		int[][] test = {{1,2,3,4,5,-1},
 						{10,9,8,7,6,-1},
 						{11,12,13,14,15,-1},
 						{20,19,18,17,16,-1},

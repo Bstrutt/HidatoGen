@@ -3,6 +3,7 @@ package HidatoGen;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +30,12 @@ public class DisplayBoard extends JFrame {
 		
 		for (int i = 0; i < b.getWidth(); i++){
 			for (int j = 0; j < b.getHeight(); j++){
-				table.setValueAt("" + b.puzzle[i][j],i,j);
+				if(b.puzzle[i][j] == -1){
+					centerRenderer.setBackground(Color.BLUE);
+					table.setValueAt(" ",i,j);
+				} else {
+					table.setValueAt("" + b.puzzle[i][j],i,j);
+				}
 			}
 		}
 		

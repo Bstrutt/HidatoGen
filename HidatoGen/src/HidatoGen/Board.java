@@ -6,6 +6,7 @@ import java.util.Vector;
 public class Board {
 	private int width;
 	private int height;
+	private int playableSpaces; // nothing yet but soon will do something
 	int[][] puzzle;
 	Random gen;
 	
@@ -13,7 +14,6 @@ public class Board {
 		this.width = width;
 		this.height = height;
 		gen = new Random();
-
 		puzzle = new int[width][height];
 		for (int i = 0; i < width; i++){
 			for (int j = 0; j < height; j++){
@@ -98,21 +98,31 @@ public class Board {
 		//Finds the collection of surrounding open squares to the start
 		Vector<Integer[]> v = findOpenCoords(currentCoords);
 		//Chooses the next square to move to randomly
-		//This needs a lot of work, might be easiest to make a recursive helper
 		while(!placeNext(currentCoords)){
 			puzzle[currentCoords[0]][currentCoords[1]] = 0;
 			currentCoords = placeOne();
 		}
 	}
-	
+	/*
+	 * Places the next 
+	 */
 	private boolean placeNext(Integer[] a){
-		
+		int count = 0;
 		Vector<Integer[]> v = findOpenCoords(a);
 		Integer[] temp;
 		while(v.size() > 0){
 			temp = v.remove(gen.nextInt(v.size()));
 			puzzle[temp[0]][temp[1]] = puzzle[a[0]][a[1]] + 1;
-			if(puzzle[temp[0]][temp[1]] == width*height){
+			
+			for(int i = 0; i < width; i++){			//This is extremely inefficient and should be removed asap
+				for(int j = 0; j < height; j++){	// We need to know the amount of unplayable spaces
+					if(puzzle[i][j] == -1){			// so that we can end our recursive method when we run
+						count++;					// out of spaces to place things.
+					}
+				}
+			}
+			
+			if(puzzle[temp[0]][temp[1]] == width*height - count){
 				return true;
 			} else {
 				if(placeNext(temp)){
@@ -125,7 +135,13 @@ public class Board {
 		}
 		return false;
 	}
-	//This method gets a coordinate and finds an open coordinate next to it randomly
+	/*
+	 * Takes a coordinate in. From there finds all of the open
+	 * coordinates that are adjacent to the given coordinate
+	 * returns as a vector
+	 * 
+	 * Used in creation and solution
+	 */
 	private Vector<Integer[]> findOpenCoords(Integer[] a){
 		int y = a[0];
 		int x = a[1];
@@ -148,8 +164,16 @@ public class Board {
 		}
 		return v;
 	}
-	//Places the first number on the board. This is the starting point
-	//Returns the coordinate of the first one
+	
+	/*
+	 * This method places the starting point on an empty board
+	 * Returns the coordinate of the starting point
+	 * Made to place the starting point on scarce boards as well
+	 * 
+	 * May be expanded to have anything as the starting point but
+	 * that might be weird so we will see
+	 * 
+	 */
 	private Integer[] placeOne(){
 		Random gen = new Random();
 		int tempRand = gen.nextInt(width * height);
